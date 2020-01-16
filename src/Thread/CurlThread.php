@@ -15,7 +15,7 @@ final class CurlThread
         $this->curlResource = \curl_init();
     }
 
-    public function setTask(BaseTask $task): void
+    public function setTask(BaseTask $task)
     {
         $this->removeTask();
         $this->task = $task;
@@ -26,7 +26,7 @@ final class CurlThread
         return $this->task;
     }
 
-    public function removeTask(): void
+    public function removeTask()
     {
         $this->task = null;
         //TODO close and init if in use
@@ -43,12 +43,12 @@ final class CurlThread
         return $this->curlResource === $curlResource;
     }
 
-    private function resetResourceOptions(): void
+    private function resetResourceOptions()
     {
         \curl_reset($this->curlResource);
     }
 
-    public function applyCurlOptions(): void
+    public function applyCurlOptions()
     {
         \curl_setopt_array($this->curlResource, $this->getTask()->getCurlOptions());
     }

@@ -10,7 +10,7 @@ use PhpMultiCurl\Thread\CurlThreadError;
 class SingleThreadTest extends TestCase
 {
 
-    public function testFound(): void
+    public function testFound()
     {
         $onLoad = function (array $response, HttpTask $task) {
             $this->assertEquals(preg_replace("#^http://#", "", $response["url"]), $task->getUrl());
@@ -41,7 +41,7 @@ class SingleThreadTest extends TestCase
         $phpMultiCurl->executeTasks($queue);
     }
 
-    public function testPathNotFound(): void
+    public function testPathNotFound()
     {
         $onLoad = function (array $response, HttpTask $task) {
             $this->assertEquals(preg_replace("#^http://#", "", $response["url"]), $task->getUrl());
@@ -68,7 +68,7 @@ class SingleThreadTest extends TestCase
         $phpMultiCurl->executeTasks($queue);
     }
 
-    public function testHostNotFound(): void
+    public function testHostNotFound()
     {
         $onLoad = function (array $response, HttpTask $task) {
             $this->assertEquals(preg_replace("#^http://#", "", $response["url"]), $task->getUrl());

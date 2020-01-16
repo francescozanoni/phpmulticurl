@@ -19,7 +19,7 @@ __Pull requests are very welcome.__
 
 ## Requires:
 
-* php >= 7.1
+* php >= 7.0
 * ext-curl
 * safe_mode = Off
 
@@ -34,6 +34,12 @@ __Pull requests are very welcome.__
 $ vendor/bin/phpunit tests
 
 # or via Docker
+$ docker run --rm \
+             -it \
+             -v "$(pwd)":/app \
+             -w /app \
+             php:7.0 \
+             /usr/local/bin/php ./vendor/phpunit/phpunit/phpunit tests
 $ docker run --rm \
              -it \
              -v "$(pwd)":/app \

@@ -10,7 +10,7 @@ final class PhpMultiCurl
 {
     private $numberOfThreads = 1;
 
-    public function setNumberOfThreads(int $number): void
+    public function setNumberOfThreads(int $number)
     {
         $this->numberOfThreads = $number > 0 ? $number : 1;
     }

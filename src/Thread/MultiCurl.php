@@ -5,7 +5,7 @@ namespace PhpMultiCurl\Thread;
 
 class MultiCurl
 {
-    private const DEFAULT_SELECT_TIMEOUT = 0.05;
+    const DEFAULT_SELECT_TIMEOUT = 0.05;
 
     private $multiCurlResource = null;
 
@@ -29,7 +29,7 @@ class MultiCurl
         return \curl_multi_select($this->multiCurlResource, (float) self::DEFAULT_SELECT_TIMEOUT);
     }
 
-    public function execThreads(): void
+    public function execThreads()
     {
         $stillRunning = null;
         do {
@@ -47,7 +47,7 @@ class MultiCurl
         return \curl_multi_info_read($this->multiCurlResource);
     }
 
-    public function checkResult(array $result, curlThread $thread): ?CurlThreadError
+    public function checkResult(array $result, curlThread $thread)
     {
         return $result['result'] === \CURLE_OK ? null : new CurlThreadError($thread->getErrorCode(), $thread->getErrorMessage(), $thread->getTask());
     }

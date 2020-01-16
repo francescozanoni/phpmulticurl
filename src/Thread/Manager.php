@@ -8,8 +8,8 @@ use SplObjectStorage;
 
 class Manager
 {
-    private const SELECT_FAILURE_OR_TIMEOUT = -1;
-    private const FIX_CPU_USAGE_SLEEP = 250;
+    const SELECT_FAILURE_OR_TIMEOUT = -1;
+    const FIX_CPU_USAGE_SLEEP = 250;
 
     private $threads = [];
     private $multiCurl = null;

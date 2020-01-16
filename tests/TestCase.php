@@ -16,7 +16,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected static $hostAndPort = "localhost:80";
 
-    public static function setUpBeforeClass(): void
+    public static function setUpBeforeClass()
     {
         // https://medium.com/@peter.lafferty/start-phps-built-in-web-server-from-phpunit-9571f38c5045
         self::$webServerProcess = new Process([
@@ -30,7 +30,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         sleep(2);
     }
 
-    public static function tearDownAfterClass(): void
+    public static function tearDownAfterClass()
     {
         self::$webServerProcess->stop();
     }

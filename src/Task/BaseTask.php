@@ -50,9 +50,9 @@ abstract class BaseTask
         return true;
     }
 
-    public function callCallbacks(?CurlThreadError $error, array $result): bool
+    public function callCallbacks($error, array $result): bool
     {
-        if ($error && $this->getOnError()) {
+        if ($error instanceof CurlThreadError && $this->getOnError()) {
             return $this->callOnError($error);
         } elseif ($error === null && $this->getOnLoad()) {
             return $this->callOnload($result);
