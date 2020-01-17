@@ -11,8 +11,15 @@ class Manager
     const SELECT_FAILURE_OR_TIMEOUT = -1;
     const FIX_CPU_USAGE_SLEEP = 250;
 
+    /**
+     * @var CurlThread[]|SplObjectStorage
+     */
     private $threads = [];
-    private $multiCurl = null;
+
+    /**
+     * @var MultiCurl
+     */
+    private $multiCurl;
 
     public function __construct(int $numberOfThreads)
     {
@@ -22,6 +29,13 @@ class Manager
         $this->allocateThreads($numberOfThreads);
     }
 
+    /**
+     * @param resource $resource
+     *
+     * @return CurlThread
+     *
+     * @throws \InvalidArgumentException
+     */
     public function find($resource): CurlThread
     {
         foreach ($this->threads as $thread) {
@@ -33,6 +47,11 @@ class Manager
         throw new \InvalidArgumentException('Resource not found in working threads');
     }
 
+    /**
+     * @param int $numberOfThreads
+     *
+     * @return SplObjectStorage
+     */
     private function allocateThreads(int $numberOfThreads): SplObjectStorage
     {
         for ($i = 0; $i < $numberOfThreads; ++$i) {
@@ -42,11 +61,15 @@ class Manager
         return $this->threads;
     }
 
+    /**
+     * @return SplObjectStorage
+     */
     private function freeThreads(): SplObjectStorage
     {
         foreach ($this->threads as $thread) {
             if ($thread->isInUse()) {
-                throw new \RuntimeException('Thread in use and can not be closed');
+                // throw new \RuntimeException('Thread in use and can not be closed');
+                continue;
             }
 
             if (!$this->threads->contains($thread)) {
@@ -118,6 +141,10 @@ class Manager
 
     public function __destruct()
     {
-        $this->freeThreads();
+        // Wait for all threads to finish
+        while ($this->threads->count() > 0) {
+            $this->freeThreads();
+            sleep(1);
+        }
     }
 }

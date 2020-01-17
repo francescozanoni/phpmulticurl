@@ -7,7 +7,15 @@ use PhpMultiCurl\Task\BaseTask;
 
 final class CurlThread
 {
-    private $curlResource = null;
+
+    /**
+     * @var resource
+     */
+    private $curlResource;
+
+    /**
+     * @var null|BaseTask
+     */
     private $task = null;
 
     public function __construct()
@@ -15,12 +23,18 @@ final class CurlThread
         $this->curlResource = \curl_init();
     }
 
+    /**
+     * @param BaseTask $task
+     */
     public function setTask(BaseTask $task)
     {
         $this->removeTask();
         $this->task = $task;
     }
 
+    /**
+     * @return BaseTask
+     */
     public function getTask(): BaseTask
     {
         return $this->task;
@@ -33,11 +47,18 @@ final class CurlThread
         $this->resetResourceOptions();
     }
 
+    /**
+     * @return bool
+     */
     public function isInUse(): bool
     {
         return $this->task === null ? false : true;
     }
 
+    /**
+     * @param resource $curlResource
+     * @return bool
+     */
     public function isEqualResource($curlResource): bool
     {
         return $this->curlResource === $curlResource;
