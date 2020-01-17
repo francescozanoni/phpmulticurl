@@ -6,7 +6,7 @@
 
 Ultra fast non-blocking OOP wrapper for `curl_multi_*` functions.
 
-__Pull requests are very very welcome__
+__Pull requests are very welcome__
 
 ## Main features:
 
