@@ -68,8 +68,7 @@ class Manager
     {
         foreach ($this->threads as $thread) {
             if ($thread->isInUse()) {
-                // throw new \RuntimeException('Thread in use and can not be closed');
-                continue;
+                throw new \RuntimeException('Thread in use and can not be closed');
             }
 
             if (!$this->threads->contains($thread)) {
@@ -141,10 +140,6 @@ class Manager
 
     public function __destruct()
     {
-        // Wait for all threads to finish
-        while ($this->threads->count() > 0) {
-            $this->freeThreads();
-            sleep(1);
-        }
+        $this->freeThreads();
     }
 }
