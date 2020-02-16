@@ -14,7 +14,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * @var string
      */
-    protected static $hostAndPort = "localhost:80";
+    protected static $host = "localhost";
+    
+    /**
+     * @var int
+     */
+    protected static $port = 8080;
 
     public static function setUpBeforeClass(): void
     {
@@ -22,7 +27,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         self::$webServerProcess = new Process([
             "php",
             "-S",
-            self::$hostAndPort,
+            self::$host . ":" . self::$port,
             "-t",
             realpath(__DIR__) . "/website"
         ]);

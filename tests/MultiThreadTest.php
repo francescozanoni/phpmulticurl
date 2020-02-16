@@ -23,9 +23,9 @@ class MultiThreadTest extends TestCase
         };
 
         $urls = [
-            self::$hostAndPort . '/index.html',
-            self::$hostAndPort . '/page1.html',
-            self::$hostAndPort . '/page2.html',
+            self::$host . ":" . self::$port . "/index.html",
+            self::$host . ":" . self::$port . "/page1.html",
+            self::$host . ":" . self::$port . "/page2.html",
         ];
 
         $queue = new TasksQueue();
@@ -50,9 +50,9 @@ class MultiThreadTest extends TestCase
         };
 
         $urls = [
-            self::$hostAndPort . '/abc.html',
-            self::$hostAndPort . '/def.html',
-            self::$hostAndPort . '/ghi.html',
+            self::$host . ":" . self::$port . "/abc.html",
+            self::$host . ":" . self::$port . "/def.html",
+            self::$host . ":" . self::$port . "/ghi.html",
         ];
 
         $queue = new TasksQueue();
@@ -77,14 +77,17 @@ class MultiThreadTest extends TestCase
         };
 
         $onError = function (CurlThreadError $error, BaseTask $task) {
-            $this->assertEquals("Failed to connect to localhost port 8080: Connection refused", $error->getMessage());
+            $this->assertEquals(
+                "Failed to connect to " . self::$host . " port " . (self::$port + 1) . ": Connection refused",
+                $error->getMessage()
+            );
             $this->assertInstanceOf(HttpTask::class, $task);
         };
 
         $urls = [
-            self::$hostAndPort . '80/index.html',
-            self::$hostAndPort . '80/page1.html',
-            self::$hostAndPort . '80/page2.html',
+            self::$host . ":" . (self::$port + 1) . "/index.html",
+            self::$host . ":" . (self::$port + 1) . "/page1.html",
+            self::$host . ":" . (self::$port + 1) . "/page2.html",
         ];
 
         $queue = new TasksQueue();
