@@ -8,25 +8,67 @@ Ultra fast non-blocking OOP wrapper for `curl_multi_*` functions.
 
 __Pull requests are very welcome.__
 
-## Main features:
+## Main features
 
 * **reuse curl resource**
 * don't waste time on unnecessary cycles, careful works with select function
 * simple queue management
-* fully configured! supports callbacks onLoad, onError, full control on http headers
+* fully configured! supports callbacks `onLoad`, `onError`, full control on HTTP headers
 * simple usage
-* few tests, no docs :( sorry :(
+* few tests and docs :( sorry :(
 
-## Requires:
+## Requirements
 
 * php >= 7.1
 * ext-curl
 * safe_mode = Off
 
-## Installation via [Composer](https://getcomposer.org):
+## Installation
 
 * install [Composer](https://getcomposer.org)
-* run `composer require dypa/phpMultiCurl`
+* run `composer require dypa/phpmulticurl`
+
+## Examples
+
+### Basic usage
+```php
+use PhpMultiCurl\Helper\Queue as TasksQueue;
+use PhpMultiCurl\PhpMultiCurl;
+use PhpMultiCurl\Task\Http as HttpTask;
+use PhpMultiCurl\Task\BaseTask;
+use PhpMultiCurl\Thread\CurlThreadError;
+
+$onLoad = function (array $response, HttpTask $task) {
+    echo $response['response_content'];
+};
+
+$onError = function (CurlThreadError $error, BaseTask $task) {
+    echo $error;
+};
+
+$queue = new TasksQueue();
+
+$urls = [
+    'http://example.com',
+    'http://example.org',
+    'http://example.net'
+];
+
+foreach ($urls as $url) {
+    $task = (new HttpTask($url))
+        ->setOnLoad($onLoad)
+        ->setOnError($onError);
+    $queue->enqueue($task);
+}
+
+$phpMultiCurl = new PhpMultiCurl();
+$phpMultiCurl->setNumberOfThreads(2);
+$phpMultiCurl->executeTasks($queue);
+```
+
+### More
+* [working with options and response](https://github.com/dypa/phpmulticurl/blob/master/examples/example1.php)
+* [load URLs in callbacks](https://github.com/dypa/phpmulticurl/blob/master/examples/example2.php)
 
 ## Tests
 
@@ -59,12 +101,6 @@ $ docker run --rm \
              php:7.4 \
              /usr/local/bin/php ./vendor/phpunit/phpunit/phpunit tests
 ```
-
-## Examples
-
-* [load many urls parallel](https://github.com/dypa/phpmulticurl/blob/master/examples/example0.php)
-* [working with options and response](https://github.com/dypa/phpmulticurl/blob/master/examples/example1.php)
-* [load urls in callbacks](https://github.com/dypa/phpmulticurl/blob/master/examples/example2.php)
 
 ## Contributing
 

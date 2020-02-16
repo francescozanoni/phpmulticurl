@@ -1,6 +1,6 @@
 <?php
-
 require '../vendor/autoload.php';
+
 use PhpMultiCurl\Helper\Queue as TasksQueue;
 use PhpMultiCurl\PhpMultiCurl;
 use PhpMultiCurl\Task\BaseTask;
@@ -16,6 +16,7 @@ $urls = [
 ];
 $value1 = 'foo';
 $value2 = 'bar';
+
 $onLoad = function (array $response, BaseTask $task) {
     var_dump(date('H:i:s'));
     $data = $task->getData();
@@ -27,7 +28,7 @@ $onLoad = function (array $response, BaseTask $task) {
     }
     flush();
 };
-$onError = function (CurlThreadError $error) {
+$onError = function (CurlThreadError $error, BaseTask $task) {
     var_dump(date('H:i:s'));
     var_dump($error->getCode());
     var_dump($error->getMessage());
@@ -35,11 +36,18 @@ $onError = function (CurlThreadError $error) {
 };
 
 $queue = new TasksQueue();
-foreach ($urls as $url) {
-    $task = new HttpTask($url);
-    $task->setOnLoad($onLoad)->setOnError($onError)->setData(['arg1' => $value1, 'arg2' => $value2, 'url' => $url]);
 
-    $task->setCurlOptions([
+foreach ($urls as $url) {
+
+    $task = new HttpTask($url);
+    $task->setOnLoad($onLoad)
+         ->setOnError($onError)
+         ->setData([
+             'arg1' => $value1,
+             'arg2' => $value2,
+             'url' => $url
+         ])
+         ->setCurlOptions([
         CURLOPT_HTTPHEADER => [
             'Accept-Language: en-us,en;q=0.5',
             'Accept-Charset: utf-8;q=0.7,*;q=0.7',
@@ -48,7 +56,6 @@ foreach ($urls as $url) {
             'Keep-Alive: 300',
             'Connection: keep-alive',
         ],
-
         CURLOPT_REFERER => 'http://www.google.com',
         CURLOPT_USERAGENT => 'Googlebot/2.1 (+http://www.google.com/bot.html)',
         CURLOPT_FOLLOWLOCATION => true,

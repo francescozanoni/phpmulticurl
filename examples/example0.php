@@ -5,6 +5,7 @@ require '../vendor/autoload.php';
 use PhpMultiCurl\Helper\Queue as TasksQueue;
 use PhpMultiCurl\PhpMultiCurl;
 use PhpMultiCurl\Task\Http as HttpTask;
+use PhpMultiCurl\Task\BaseTask;
 use PhpMultiCurl\Thread\CurlThreadError;
 
 if (isset($_GET['sleep'])) {
@@ -13,11 +14,11 @@ if (isset($_GET['sleep'])) {
     exit;
 }
 
-$onLoad = function (array $response) {
+$onLoad = function (array $response, HttpTask $task) {
     var_dump($response['response_content']);
 };
 
-$onError = function (CurlThreadError $error) {
+$onError = function (CurlThreadError $error, BaseTask $task) {
     var_dump($error->getCode());
     echo $error;
 };
