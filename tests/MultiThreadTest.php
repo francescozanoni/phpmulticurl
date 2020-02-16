@@ -38,6 +38,7 @@ class MultiThreadTest extends TestCase
         
         $this->assertEquals(count($urls), count(self::$loadCallbackArgs));
         $this->assertEmpty(self::$errorCallbackArgs);
+        
         foreach ($urls as $url) {
             $response = self::$loadCallbackArgs[$url]["response"];
             $task = self::$loadCallbackArgs[$url]["task"];
@@ -63,6 +64,7 @@ class MultiThreadTest extends TestCase
         
         $this->assertEquals(count($urls), count(self::$loadCallbackArgs));
         $this->assertEmpty(self::$errorCallbackArgs);
+        
         foreach ($urls as $url) {
             $response = self::$loadCallbackArgs[$url]["response"];
             $task = self::$loadCallbackArgs[$url]["task"];
@@ -84,6 +86,7 @@ class MultiThreadTest extends TestCase
         
         $this->assertEmpty(self::$loadCallbackArgs);
         $this->assertEquals(count($urls), count(self::$errorCallbackArgs));
+        
         foreach ($urls as $url) {
             $error = self::$errorCallbackArgs[$url]["error"];
             $task = self::$errorCallbackArgs[$url]["task"];

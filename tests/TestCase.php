@@ -25,12 +25,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected static $port = 8080;
     
     /**
-     * @var array
+     * @var array arguments of executed onLoad callbacks, indexed by task URL
      */
     protected static $loadCallbackArgs = [];
     
     /**
-     * @var array
+     * @var array arguments of executed onError callbacks, indexed by task URL
      */
     protected static $errorCallbackArgs = [];
 
