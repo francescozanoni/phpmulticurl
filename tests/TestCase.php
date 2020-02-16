@@ -2,6 +2,9 @@
 declare(strict_types=1);
 
 use Symfony\Component\Process\Process;
+use PhpMultiCurl\Task\BaseTask;
+use PhpMultiCurl\Task\Http as HttpTask;
+use PhpMultiCurl\Thread\CurlThreadError;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -20,6 +23,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @var int
      */
     protected static $port = 8080;
+    
+    /**
+     * @var array
+     */
+    protected static $loadCallbackArgs = [];
+    
+    /**
+     * @var array
+     */
+    protected static $errorCallbackArgs = [];
 
     public static function setUpBeforeClass(): void
     {
@@ -38,6 +51,28 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     public static function tearDownAfterClass(): void
     {
         self::$webServerProcess->stop();
+    }
+    
+    public function tearDown(): void
+    {
+        self::$loadCallbackArgs = [];
+        self::$errorCallbackArgs = [];
+    }
+    
+    public static function loadCallback(array $response, HttpTask $task)
+    {
+        self::$loadCallbackArgs[$task->getUrl()] = [
+            "response" => $response,
+            "task" => $task
+        ];
+    }
+    
+    public static function errorCallback(CurlThreadError $error, BaseTask $task)
+    {
+        self::$errorCallbackArgs[$task->getUrl()] = [
+            "error" => $error,
+            "task" => $task
+        ];
     }
 
 }
