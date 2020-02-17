@@ -7,12 +7,23 @@ use PhpMultiCurl\Thread\CurlThreadError;
 
 abstract class BaseTask
 {
+    protected $url = "";
     protected $onLoadCallback = null;
     protected $onErrorCallback = null;
     protected $data = null;
     protected $curlOptions = [];
 
-    public function setOnLoad(callable $callback)
+    public function __construct(string $url)
+    {
+        $this->url = $url;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setOnLoad(callable $callback): self
     {
         $this->onLoadCallback = $callback;
 
@@ -31,7 +42,7 @@ abstract class BaseTask
         return true;
     }
 
-    public function setOnError(callable $callback)
+    public function setOnError(callable $callback): self
     {
         $this->onErrorCallback = $callback;
 
@@ -73,7 +84,7 @@ abstract class BaseTask
         return $this->data;
     }
 
-    public function setCurlOptions(array $options)
+    public function setCurlOptions(array $options): self
     {
         $this->curlOptions = $options;
 
