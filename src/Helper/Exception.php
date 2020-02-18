@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace PhpMultiCurl\Helper;
 
-use Exception as phpException;
-
-class Exception extends phpException
+class Exception extends \Exception
 {
-    public function __construct($message)
+    public function __construct(string $message)
     {
-        return parent::__construct('[PhpMultiCurl] '.$message);
+        return parent::__construct('[PhpMultiCurl] ' . $message);
     }
 }

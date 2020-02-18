@@ -15,12 +15,30 @@ final class CurlThread
         $this->curlResource = \curl_init();
     }
 
+    /**
+     * @param BaseTask $task e.g. Object (
+     *                              [url:protected] => localhost:8081/index.html
+     *                              [onLoadCallback:protected] => TestCase::loadCallback
+     *                              [onErrorCallback:protected] => TestCase::errorCallback
+     *                              [data:protected] =>
+     *                              [curlOptions:protected] => Array ()
+     *                            )
+     */
     public function setTask(BaseTask $task): void
     {
         $this->removeTask();
         $this->task = $task;
     }
 
+    /**
+     * @return BaseTask e.g. Object (
+     *                         [url:protected] => localhost:8081/index.html
+     *                         [onLoadCallback:protected] => TestCase::loadCallback
+     *                         [onErrorCallback:protected] => TestCase::errorCallback
+     *                         [data:protected] =>
+     *                         [curlOptions:protected] => Array ()
+     *                       )
+     */
     public function getTask(): BaseTask
     {
         return $this->task;
@@ -38,6 +56,11 @@ final class CurlThread
         return $this->task === null ? false : true;
     }
 
+    /**
+     * @param resource $curlResource
+     *
+     * @return bool
+     */
     public function isEqualResource($curlResource): bool
     {
         return $this->curlResource === $curlResource;
